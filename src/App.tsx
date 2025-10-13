@@ -1,7 +1,9 @@
+import Navbar from './components/Navbar';
+
 export default function App() {
 	return (
-		<>
-			<h1 className='text-3xl font-bold underline'>Hello world!</h1>
-		</>
+		<div className='min-h-screen py-10 text-xl text-white bg-slate-800'>
+			<Navbar />
+		</div>
 	);
 }
