@@ -3,14 +3,14 @@ import { useState } from 'react';
 import MoviesList from './MoviesList';
 
 export default function ListBox() {
-	const [isOpen1, setIsOpen1] = useState(true);
+	const [isOpen, setIsOpen] = useState(true);
 
 	return (
 		<div>
-			<button type='button' onClick={() => setIsOpen1((prev) => !prev)}>
-				{isOpen1 ? '–' : '+'}
+			<button type='button' onClick={() => setIsOpen((isOpen) => !isOpen)}>
+				{isOpen ? '–' : '+'}
 			</button>
-			{isOpen1 && <MoviesList />}
+			{isOpen && <MoviesList />}
 		</div>
 	);
 }
