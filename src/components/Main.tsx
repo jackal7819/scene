@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
+import ListBox from './ListBox';
 import { average, tempMovieData, tempWatchedData } from '../../constants';
 
 export default function Main() {
-	const [movies, setMovies] = useState(tempMovieData);
 	const [watched, setWatched] = useState(tempWatchedData);
-	const [isOpen1, setIsOpen1] = useState(true);
 	const [isOpen2, setIsOpen2] = useState(true);
 
 	const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
@@ -14,32 +13,12 @@ export default function Main() {
 
 	return (
 		<main className='container flex flex-grow p-10 mx-auto w-9/10'>
-			<div>
-				<button type='button' onClick={() => setIsOpen1((prev) => !prev)}>
-					{isOpen1 ? '–' : '+'}
-				</button>
-				{isOpen1 && (
-					<ul>
-						{movies.map((movie) => (
-							<li key={movie.imdbID}>
-								<img src={movie.Poster} alt={`${movie.Title} poster`} />
-								<h3>{movie.Title}</h3>
-								<div>
-									<p>
-										<span>🗓</span>
-										<span>{movie.Year}</span>
-									</p>
-								</div>
-							</li>
-						))}
-					</ul>
-				)}
-			</div>
+			<ListBox />
 			<div>
 				<button type='button' onClick={() => setIsOpen2((prev) => !prev)}>
 					{isOpen2 ? '–' : '+'}
 				</button>
-				{isOpen1 && (
+				{isOpen2 && (
 					<>
 						<div>
 							<h2>Movies you watched</h2>
