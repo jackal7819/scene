@@ -13,7 +13,7 @@ interface WatchedMoviesListProps {
 
 export default function WatchedMoviesList({ watched }: WatchedMoviesListProps) {
 	return (
-		<ul>
+		<ul className='flex flex-col'>
 			{watched.map((movie) => (
 				<WatchedMovie key={movie.imdbID} movie={movie} />
 			))}

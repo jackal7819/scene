@@ -7,7 +7,7 @@ export default function MoviesList() {
 	const [movies, setMovies] = useState(tempMovieData);
 
 	return (
-		<ul>
+		<ul className='flex flex-col'>
 			{movies.map((movie) => (
 				<Movie key={movie.imdbID} movie={movie} />
 			))}
