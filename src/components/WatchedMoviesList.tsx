@@ -1,14 +1,8 @@
 import WatchedMovie from './WatchedMovie';
+import type { IMovie } from './Movie';
 
 interface WatchedMoviesListProps {
-	watched: {
-		imdbID: string;
-		Poster: string;
-		Title: string;
-		imdbRating: number;
-		userRating: number;
-		runtime: number;
-	}[];
+	watched: IMovie[];
 }
 
 export default function WatchedMoviesList({ watched }: WatchedMoviesListProps) {

@@ -1,11 +1,11 @@
-import { useState } from 'react';
-
 import Movie from './Movie';
-import { tempMovieData } from '../../constants';
+import type { IMovie } from './Movie';
 
-export default function MoviesList() {
-	const [movies, setMovies] = useState(tempMovieData);
+interface MoviesListProps {
+	movies: IMovie[];
+}
 
+export default function MoviesList({ movies }: MoviesListProps) {
 	return (
 		<ul className='flex flex-col'>
 			{movies.map((movie) => (

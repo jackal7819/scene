@@ -1,13 +1,14 @@
+import type { IMovie } from './Movie';
+
 interface WatchedSummaryProps {
-	watched: {
-		imdbRating: number;
-		userRating: number;
-		runtime: number;
-	}[];
+	watched: IMovie[];
 }
 
 export default function WatchedSummary({ watched }: WatchedSummaryProps) {
-	const average = (arr: number[]) => arr.reduce((acc, cur, _, arr) => acc + cur / arr.length, 0);
+	const average = (arr: (number | undefined)[]) => {
+		const numbers = arr.filter((n): n is number => n !== undefined);
+		return numbers.length ? numbers.reduce((acc, cur) => acc + cur / numbers.length, 0) : 0;
+	};
 	const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
 	const avgUserRating = average(watched.map((movie) => movie.userRating));
 	const avgRuntime = average(watched.map((movie) => movie.runtime));
