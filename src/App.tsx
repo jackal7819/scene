@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import ErrorMessage from './components/ErrorMessage';
 import ListBox from './components/ListBox';
 import Loader from './components/Loader';
 import Logo from './components/Logo';
@@ -19,6 +20,7 @@ export default function App() {
 	const [movies, setMovies] = useState<IMovie[]>([]);
 	const [watched, setWatched] = useState<IMovie[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState('');
 
 	const getMovies = async (query: string) => {
 		try {
@@ -26,16 +28,18 @@ export default function App() {
 			const url = `${API_BASE_URL}/?apikey=${API_KEY}&s=${query}`;
 			const res = await fetch(url);
 			const data = await res.json();
+			if (data.Response === 'False') throw new Error(data.Error);
 			setMovies(data.Search);
 			setWatched([]);
-			setIsLoading(false);
 		} catch (error) {
-			console.error(error);
+			if (error instanceof Error) setError(error.message);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
 	useEffect(() => {
-		getMovies('Batman');
+		getMovies('batman');
 	}, []);
 
 	return (
@@ -46,7 +50,11 @@ export default function App() {
 				<Results movies={movies} />
 			</Navbar>
 			<Main>
-				<ListBox>{isLoading ? <Loader /> : <MoviesList movies={movies} />}</ListBox>
+				<ListBox>
+					{isLoading && <Loader />}
+					{!isLoading && !error && <MoviesList movies={movies} />}
+					{error && <ErrorMessage errorMessage={error} />}
+				</ListBox>
 				<ListBox>
 					<WatchedSummary watched={watched} />
 					<WatchedMoviesList watched={watched} />
