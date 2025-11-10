@@ -21,10 +21,12 @@ export default function App() {
 	const [watched, setWatched] = useState<IMovie[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
+	const [query, setQuery] = useState('star');
 
 	const getMovies = async (query: string) => {
 		try {
 			setIsLoading(true);
+			setError('');
 			const url = `${API_BASE_URL}/?apikey=${API_KEY}&s=${query}`;
 			const res = await fetch(url);
 			const data = await res.json();
@@ -39,14 +41,19 @@ export default function App() {
 	};
 
 	useEffect(() => {
-		getMovies('batman');
-	}, []);
+		if (query.length < 3) {
+			setMovies([]);
+			setError('');
+			return;
+		}
+		getMovies(query);
+	}, [query]);
 
 	return (
 		<div className='min-h-screen py-10 text-xl text-white bg-slate-800'>
 			<Navbar>
 				<Logo />
-				<Search />
+				<Search query={query} setQuery={setQuery} />
 				<Results movies={movies} />
 			</Navbar>
 			<Main>
