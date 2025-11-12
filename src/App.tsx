@@ -26,7 +26,11 @@ export default function App() {
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 
 	const handleSelectMovie = (id: string) => {
-		setSelectedId(id);
+		setSelectedId((selectedId) => (selectedId === id ? null : id));
+	};
+
+	const handleCloseMovieDetails = () => {
+		setSelectedId(null);
 	};
 
 	const getMovies = async (query: string) => {
@@ -72,7 +76,10 @@ export default function App() {
 				</ListBox>
 				<ListBox>
 					{selectedId ? (
-						<MovieDetails selectedId={selectedId} />
+						<MovieDetails
+							selectedId={selectedId}
+							onCloseMovieDetails={handleCloseMovieDetails}
+						/>
 					) : (
 						<>
 							<WatchedSummary watched={watched} />

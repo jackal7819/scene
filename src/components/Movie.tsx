@@ -17,7 +17,7 @@ export default function Movie({ movie, onSelectMovie }: MovieProps) {
 	return (
 		<li
 			key={movie.imdbID}
-			className='flex flex-col gap-10 p-10 border-b md:h-50 border-slate-600 rounded-xl md:flex-row'
+			className='flex flex-col gap-10 p-10 duration-500 border-b cursor-pointer md:h-50 border-slate-600 rounded-xl md:flex-row hover:bg-slate-600'
 			onClick={() => onSelectMovie(movie.imdbID)}
 		>
 			<img src={movie.Poster} alt={`${movie.Title} poster`} className='w-20' />
