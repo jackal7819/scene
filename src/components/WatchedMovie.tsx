@@ -24,7 +24,7 @@ export default function WatchedMovie({ movie }: WatchedMovieProps) {
 					</p>
 					<p className='flex items-center justify-center gap-5'>
 						<span>⏳</span>
-						<span>{movie.runtime} min</span>
+						<span>{movie.Runtime} min</span>
 					</p>
 				</div>
 			</div>

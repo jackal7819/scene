@@ -3,9 +3,13 @@ export interface IMovie {
 	Title: string;
 	Year: string;
 	Poster: string;
-	runtime?: number;
+	Runtime?: number;
 	imdbRating?: number;
 	userRating?: number;
+	Genre?: string;
+	Plot?: string;
+	Actors?: string;
+	Director?: string;
 }
 
 interface MovieProps {

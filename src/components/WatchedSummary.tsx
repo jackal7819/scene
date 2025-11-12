@@ -11,7 +11,7 @@ export default function WatchedSummary({ watched }: WatchedSummaryProps) {
 	};
 	const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
 	const avgUserRating = average(watched.map((movie) => movie.userRating));
-	const avgRuntime = average(watched.map((movie) => movie.runtime));
+	const avgRuntime = average(watched.map((movie) => movie.Runtime));
 
 	return (
 		<div className='flex flex-col justify-center gap-10 p-10 text-2xl bg-slate-600 rounded-xl md:h-50'>
