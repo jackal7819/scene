@@ -5,6 +5,7 @@ import ListBox from './components/ListBox';
 import Loader from './components/Loader';
 import Logo from './components/Logo';
 import Main from './components/Main';
+import MovieDetails from './components/MovieDetails';
 import MoviesList from './components/MoviesList';
 import Navbar from './components/Navbar';
 import Results from './components/Results';
@@ -22,6 +23,11 @@ export default function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
 	const [query, setQuery] = useState('star');
+	const [selectedId, setSelectedId] = useState<string | null>(null);
+
+	const handleSelectMovie = (id: string) => {
+		setSelectedId(id);
+	};
 
 	const getMovies = async (query: string) => {
 		try {
@@ -59,12 +65,20 @@ export default function App() {
 			<Main>
 				<ListBox>
 					{isLoading && <Loader />}
-					{!isLoading && !error && <MoviesList movies={movies} />}
+					{!isLoading && !error && (
+						<MoviesList movies={movies} onSelectMovie={handleSelectMovie} />
+					)}
 					{error && <ErrorMessage errorMessage={error} />}
 				</ListBox>
 				<ListBox>
-					<WatchedSummary watched={watched} />
-					<WatchedMoviesList watched={watched} />
+					{selectedId ? (
+						<MovieDetails selectedId={selectedId} />
+					) : (
+						<>
+							<WatchedSummary watched={watched} />
+							<WatchedMoviesList watched={watched} />
+						</>
+					)}
 				</ListBox>
 			</Main>
 		</div>
