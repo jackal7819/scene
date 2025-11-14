@@ -4,14 +4,15 @@ interface WatchedSummaryProps {
 	watched: IMovie[];
 }
 
+const average = (arr: (number | undefined)[]) => {
+	const numbers = arr.filter((n): n is number => n !== undefined);
+	return numbers.length ? numbers.reduce((acc, cur) => acc + cur / numbers.length, 0) : 0;
+};
+
 export default function WatchedSummary({ watched }: WatchedSummaryProps) {
-	const average = (arr: (number | undefined)[]) => {
-		const numbers = arr.filter((n): n is number => n !== undefined);
-		return numbers.length ? numbers.reduce((acc, cur) => acc + cur / numbers.length, 0) : 0;
-	};
-	const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-	const avgUserRating = average(watched.map((movie) => movie.userRating));
-	const avgRuntime = average(watched.map((movie) => movie.Runtime));
+	const avgImdbRating = average(watched.map((movie) => movie.imdbRating)).toFixed(1);
+	const avgUserRating = average(watched.map((movie) => movie.userRating)).toFixed(1);
+	const avgRuntime = average(watched.map((movie) => Number(movie.Runtime.split(' ').at(0))));
 
 	return (
 		<div className='flex flex-col justify-center gap-10 p-10 text-2xl bg-slate-600 rounded-xl md:h-50'>

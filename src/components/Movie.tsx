@@ -3,8 +3,8 @@ export interface IMovie {
 	Title: string;
 	Year: string;
 	Poster: string;
-	Runtime?: number;
-	imdbRating?: number;
+	Runtime: string;
+	imdbRating: number;
 	userRating?: number;
 	Genre?: string;
 	Plot?: string;

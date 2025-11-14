@@ -1,94 +1,3 @@
-// import { useEffect, useState } from 'react';
-
-// import ErrorMessage from './ErrorMessage';
-// import Loader from './Loader';
-// import type { IMovie } from './Movie';
-
-// interface MovieDetailsProps {
-// 	selectedId: string;
-// 	onCloseMovieDetails: () => void;
-// }
-
-// const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
-// const API_BASE_URL = import.meta.env.VITE_OMDB_BASE_URL;
-
-// export default function MovieDetails({ selectedId, onCloseMovieDetails }: MovieDetailsProps) {
-// 	const [movie, setMovie] = useState<IMovie | null>(null);
-// 	const [isLoading, setIsLoading] = useState(false);
-// 	const [error, setError] = useState('');
-
-// 	const getMovieDetails = async (id: string) => {
-// 		try {
-// 			setIsLoading(true);
-// 			setError('');
-// 			const url = `${API_BASE_URL}/?apikey=${API_KEY}&i=${id}`;
-// 			const res = await fetch(url);
-// 			const data = await res.json();
-// 			if (data.Response === 'False') throw new Error(data.Error);
-// 			setMovie(data);
-// 		} catch (error) {
-// 			if (error instanceof Error) setError(error.message);
-// 		} finally {
-// 			setIsLoading(false);
-// 		}
-// 	};
-
-// 	useEffect(() => {
-// 		getMovieDetails(selectedId);
-// 	}, [selectedId]);
-// 	return (
-// 		<aside>
-// 			<button
-// 				type='button'
-// 				className='absolute flex items-center justify-center pt-1 text-4xl duration-500 rounded-full cursor-pointer size-14 left-10 top-10 bg-slate-800 hover:bg-slate-600'
-// 				onClick={onCloseMovieDetails}
-// 			>
-// 				&larr;
-// 			</button>
-// 			{isLoading && <Loader />}
-// 			{!isLoading && !error && movie && (
-// 				<>
-// 					<header className='movie-details'>
-// 						<img src={movie.Poster} alt={`Poster of ${movie.Title}`} />
-// 						<div className='movie-details__content'>
-// 							<h2>{movie.Title}</h2>
-// 							<p>
-// 								<span>🗓</span>
-// 								<span>{movie.Year}</span>
-// 							</p>
-// 							<p>
-// 								<span>⭐️</span>
-// 								<span>{movie.imdbRating}</span>
-// 							</p>
-// 							<p>
-// 								<span>⏳</span>
-// 								<span>{movie.Runtime}</span>
-// 							</p>
-// 							<p>
-// 								<span>🎭</span>
-// 								<span>{movie.Genre}</span>
-// 							</p>
-// 						</div>
-// 					</header>
-// 					<section>
-// 						<p>
-// 							<span>📝</span>
-// 							<span>{movie.Plot}</span>
-// 						</p>
-// 						<p>
-// 							<span>👥</span> {movie.Actors}
-// 						</p>
-// 						<p>
-// 							<span>💡</span> {movie.Director}
-// 						</p>
-// 					</section>
-// 				</>
-// 			)}
-// 			{error && <ErrorMessage errorMessage={error} />}
-// 		</aside>
-// 	);
-// }
-
 import { useEffect, useState } from 'react';
 
 import ErrorMessage from './ErrorMessage';
@@ -99,15 +8,39 @@ import type { IMovie } from './Movie';
 interface MovieDetailsProps {
 	selectedId: string;
 	onCloseMovieDetails: () => void;
+	onAddWatched: (movie: IMovie) => void;
 }
 
 const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 const API_BASE_URL = import.meta.env.VITE_OMDB_BASE_URL;
 
-export default function MovieDetails({ selectedId, onCloseMovieDetails }: MovieDetailsProps) {
+export default function MovieDetails({
+	selectedId,
+	onCloseMovieDetails,
+	onAddWatched,
+}: MovieDetailsProps) {
 	const [movie, setMovie] = useState<IMovie | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
+
+	const handleAddWatched = () => {
+		if (!movie) return;
+		const newWatchedMovie = {
+			imdbID: movie.imdbID,
+			Title: movie.Title,
+			Year: movie.Year,
+			Poster: movie.Poster,
+			Runtime: movie.Runtime,
+			imdbRating: movie.imdbRating,
+			userRating: 5,
+			Genre: movie.Genre,
+			Plot: movie.Plot,
+			Actors: movie.Actors,
+			Director: movie.Director,
+		};
+		onAddWatched(newWatchedMovie);
+		onCloseMovieDetails();
+	};
 
 	const getMovieDetails = async (id: string) => {
 		try {
@@ -168,23 +101,33 @@ export default function MovieDetails({ selectedId, onCloseMovieDetails }: MovieD
 						</div>
 					</header>
 
-					<section aria-label='Movie information' className='space-y-4'>
+					<section aria-label='Movie information'>
+						<div className='p-10 mb-10 rounded-lg bg-slate-600'>
+							<StarRating
+								maxRating={10}
+								defaultRating={movie.imdbRating}
+								onSetRating={(rating) => console.log(rating)}
+							/>
+							<button
+								type='button'
+								className='w-full px-6 py-4 mt-10 text-2xl duration-500 bg-indigo-500 rounded-lg cursor-pointer hover:bg-indigo-400 active:bg-indigo-600'
+								onClick={handleAddWatched}
+							>
+								+ Add to list
+							</button>
+						</div>
+
 						<dl className='space-y-10'>
-							<div className='p-10 rounded-lg bg-slate-600'>
-								<StarRating
-									maxRating={10}
-									defaultRating={movie.imdbRating}
-									onSetRating={(rating) => console.log(rating)}
-								/>
-							</div>
 							<div>
 								<dt className='font-semibold text-slate-200'>📝 Plot</dt>
 								<dd className='text-slate-400'>{movie.Plot}</dd>
 							</div>
+
 							<div>
 								<dt className='font-semibold text-slate-200'>👥 Actors</dt>
 								<dd className='text-slate-400'>{movie.Actors}</dd>
 							</div>
+
 							<div>
 								<dt className='font-semibold text-slate-200'>💡 Director</dt>
 								<dd className='text-slate-400'>{movie.Director}</dd>

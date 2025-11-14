@@ -33,6 +33,15 @@ export default function App() {
 		setSelectedId(null);
 	};
 
+	const handleAddWatched = (movie: IMovie) => {
+		setWatched((watched) => {
+			const isAlreadyWatched = watched.some((m) => m.imdbID === movie.imdbID);
+			if (isAlreadyWatched) return watched;
+
+			return [...watched, movie];
+		});
+	};
+
 	const getMovies = async (query: string) => {
 		try {
 			setIsLoading(true);
@@ -42,7 +51,6 @@ export default function App() {
 			const data = await res.json();
 			if (data.Response === 'False') throw new Error(data.Error);
 			setMovies(data.Search);
-			setWatched([]);
 		} catch (error) {
 			if (error instanceof Error) setError(error.message);
 		} finally {
@@ -79,6 +87,7 @@ export default function App() {
 						<MovieDetails
 							selectedId={selectedId}
 							onCloseMovieDetails={handleCloseMovieDetails}
+							onAddWatched={handleAddWatched}
 						/>
 					) : (
 						<>
