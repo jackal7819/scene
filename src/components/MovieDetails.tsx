@@ -68,6 +68,14 @@ export default function MovieDetails({
 		getMovieDetails(selectedId);
 	}, [selectedId]);
 
+	useEffect(() => {
+		document.title = `Movie | ${movie?.Title}`;
+
+		return () => {
+			document.title = 'Scene';
+		};
+	}, [movie]);
+
 	return (
 		<aside
 			aria-label='Movie details'
