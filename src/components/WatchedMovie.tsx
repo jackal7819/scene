@@ -2,9 +2,10 @@ import type { IMovie } from './Movie';
 
 interface WatchedMovieProps {
 	movie: IMovie;
+	onDeleteWatched: (id: string) => void;
 }
 
-export default function WatchedMovie({ movie }: WatchedMovieProps) {
+export default function WatchedMovie({ movie, onDeleteWatched }: WatchedMovieProps) {
 	return (
 		<li
 			key={movie.imdbID}
@@ -26,6 +27,13 @@ export default function WatchedMovie({ movie }: WatchedMovieProps) {
 						<span>⏳</span>
 						<span>{Number(movie.Runtime.split(' ').at(0))} min</span>
 					</p>
+					<button
+						type='button'
+						onClick={() => onDeleteWatched(movie.imdbID)}
+						className='duration-500 cursor-pointer hover:scale-125'
+					>
+						❌
+					</button>
 				</div>
 			</div>
 		</li>

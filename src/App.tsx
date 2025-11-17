@@ -37,6 +37,10 @@ export default function App() {
 		setWatched((watched) => [...watched, movie]);
 	};
 
+	const handleDeleteWatched = (id: string) => {
+		setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+	};
+
 	const getMovies = async (query: string) => {
 		try {
 			setIsLoading(true);
@@ -88,7 +92,10 @@ export default function App() {
 					) : (
 						<>
 							<WatchedSummary watched={watched} />
-							<WatchedMoviesList watched={watched} />
+							<WatchedMoviesList
+								watched={watched}
+								onDeleteWatched={handleDeleteWatched}
+							/>
 						</>
 					)}
 				</ListBox>
