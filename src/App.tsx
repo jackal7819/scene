@@ -34,12 +34,7 @@ export default function App() {
 	};
 
 	const handleAddWatched = (movie: IMovie) => {
-		setWatched((watched) => {
-			const isAlreadyWatched = watched.some((m) => m.imdbID === movie.imdbID);
-			if (isAlreadyWatched) return watched;
-
-			return [...watched, movie];
-		});
+		setWatched((watched) => [...watched, movie]);
 	};
 
 	const getMovies = async (query: string) => {
@@ -88,6 +83,7 @@ export default function App() {
 							selectedId={selectedId}
 							onCloseMovieDetails={handleCloseMovieDetails}
 							onAddWatched={handleAddWatched}
+							watched={watched}
 						/>
 					) : (
 						<>

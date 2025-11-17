@@ -12,7 +12,9 @@ const average = (arr: (number | undefined)[]) => {
 export default function WatchedSummary({ watched }: WatchedSummaryProps) {
 	const avgImdbRating = average(watched.map((movie) => movie.imdbRating)).toFixed(1);
 	const avgUserRating = average(watched.map((movie) => movie.userRating)).toFixed(1);
-	const avgRuntime = average(watched.map((movie) => Number(movie.Runtime.split(' ').at(0))));
+	const avgRuntime = average(
+		watched.map((movie) => Number(movie.Runtime.split(' ').at(0)))
+	).toFixed(0);
 
 	return (
 		<div className='flex flex-col justify-center gap-10 p-10 text-2xl bg-slate-600 rounded-xl md:h-50'>

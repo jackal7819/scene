@@ -9,6 +9,7 @@ interface MovieDetailsProps {
 	selectedId: string;
 	onCloseMovieDetails: () => void;
 	onAddWatched: (movie: IMovie) => void;
+	watched: IMovie[];
 }
 
 const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
@@ -18,10 +19,15 @@ export default function MovieDetails({
 	selectedId,
 	onCloseMovieDetails,
 	onAddWatched,
+	watched,
 }: MovieDetailsProps) {
 	const [movie, setMovie] = useState<IMovie | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
+	const [userRating, setUserRating] = useState(0);
+
+	const isAlreadyWatched = watched.some((m) => m.imdbID === movie?.imdbID);
+	const watchedUserRating = watched.find((m) => m.imdbID === movie?.imdbID)?.userRating;
 
 	const handleAddWatched = () => {
 		if (!movie) return;
@@ -32,7 +38,7 @@ export default function MovieDetails({
 			Poster: movie.Poster,
 			Runtime: movie.Runtime,
 			imdbRating: movie.imdbRating,
-			userRating: 5,
+			userRating: userRating,
 			Genre: movie.Genre,
 			Plot: movie.Plot,
 			Actors: movie.Actors,
@@ -103,18 +109,28 @@ export default function MovieDetails({
 
 					<section aria-label='Movie information'>
 						<div className='p-10 mb-10 rounded-lg bg-slate-600'>
-							<StarRating
-								maxRating={10}
-								defaultRating={movie.imdbRating}
-								onSetRating={(rating) => console.log(rating)}
-							/>
-							<button
-								type='button'
-								className='w-full px-6 py-4 mt-10 text-2xl duration-500 bg-indigo-500 rounded-lg cursor-pointer hover:bg-indigo-400 active:bg-indigo-600'
-								onClick={handleAddWatched}
-							>
-								+ Add to list
-							</button>
+							{!isAlreadyWatched ? (
+								<>
+									<StarRating
+										maxRating={10}
+										defaultRating={movie.imdbRating}
+										onSetRating={setUserRating}
+									/>
+									{userRating > 0 && (
+										<button
+											type='button'
+											className='w-full px-6 py-4 mt-10 text-2xl duration-500 bg-indigo-500 rounded-lg cursor-pointer hover:bg-indigo-400 active:bg-indigo-600'
+											onClick={handleAddWatched}
+										>
+											+ Add to list
+										</button>
+									)}
+								</>
+							) : (
+								<p className='text-2xl text-center'>
+									You already rated this movie 🌟 {watchedUserRating?.toFixed(1)}
+								</p>
+							)}
 						</div>
 
 						<dl className='space-y-10'>
