@@ -76,6 +76,18 @@ export default function MovieDetails({
 		};
 	}, [movie]);
 
+	useEffect(() => {
+		const callback = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') onCloseMovieDetails();
+		};
+
+		document.addEventListener('keydown', callback);
+
+		return () => {
+			document.removeEventListener('keydown', callback);
+		};
+	}, [onCloseMovieDetails]);
+
 	return (
 		<aside
 			aria-label='Movie details'

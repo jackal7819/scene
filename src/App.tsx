@@ -22,7 +22,7 @@ export default function App() {
 	const [watched, setWatched] = useState<IMovie[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
-	const [query, setQuery] = useState('star');
+	const [query, setQuery] = useState('');
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 
 	const handleSelectMovie = (id: string) => {
@@ -65,6 +65,8 @@ export default function App() {
 			setError('');
 			return;
 		}
+
+		handleCloseMovieDetails();
 		getMovies(query);
 
 		return () => controller.abort();
