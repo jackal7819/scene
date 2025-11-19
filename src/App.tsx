@@ -41,29 +41,33 @@ export default function App() {
 		setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
 	};
 
-	const getMovies = async (query: string) => {
-		try {
-			setIsLoading(true);
-			setError('');
-			const url = `${API_BASE_URL}/?apikey=${API_KEY}&s=${query}`;
-			const res = await fetch(url);
-			const data = await res.json();
-			if (data.Response === 'False') throw new Error(data.Error);
-			setMovies(data.Search);
-		} catch (error) {
-			if (error instanceof Error) setError(error.message);
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
 	useEffect(() => {
+		const controller = new AbortController();
+
+		const getMovies = async (query: string) => {
+			try {
+				setIsLoading(true);
+				setError('');
+				const url = `${API_BASE_URL}/?apikey=${API_KEY}&s=${query}`;
+				const res = await fetch(url, { signal: controller.signal });
+				const data = await res.json();
+				if (data.Response === 'False') throw new Error(data.Error);
+				setMovies(data.Search);
+			} catch (error) {
+				if (error instanceof Error && !controller.signal.aborted) setError(error.message);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
 		if (query.length < 3) {
 			setMovies([]);
 			setError('');
 			return;
 		}
 		getMovies(query);
+
+		return () => controller.abort();
 	}, [query]);
 
 	return (
