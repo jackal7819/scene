@@ -4,6 +4,7 @@ import ErrorMessage from './ErrorMessage';
 import Loader from './Loader';
 import StarRating from './Rating';
 import type { IMovie } from './Movie';
+import { useKey } from '../hooks/useKey';
 
 interface MovieDetailsProps {
 	selectedId: string;
@@ -76,17 +77,7 @@ export default function MovieDetails({
 		};
 	}, [movie]);
 
-	useEffect(() => {
-		const callback = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') onCloseMovieDetails();
-		};
-
-		document.addEventListener('keydown', callback);
-
-		return () => {
-			document.removeEventListener('keydown', callback);
-		};
-	}, [onCloseMovieDetails]);
+	useKey('Escape', onCloseMovieDetails);
 
 	return (
 		<aside
