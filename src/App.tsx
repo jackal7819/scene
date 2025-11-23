@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import ErrorMessage from './components/ErrorMessage';
 import ListBox from './components/ListBox';
@@ -13,18 +13,13 @@ import Search from './components/Search';
 import WatchedMoviesList from './components/WatchedMoviesList';
 import WatchedSummary from './components/WatchedSummary';
 import type { IMovie } from './components/Movie';
-
-const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
-const API_BASE_URL = import.meta.env.VITE_OMDB_BASE_URL;
+import { useMovies } from './hooks/useMovies';
 
 export default function App() {
-	const [movies, setMovies] = useState<IMovie[]>([]);
 	const [watched, setWatched] = useState<IMovie[]>(() => {
 		const storedWatched = localStorage.getItem('watched');
 		return storedWatched ? JSON.parse(storedWatched) : [];
 	});
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState('');
 	const [query, setQuery] = useState('');
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -32,9 +27,9 @@ export default function App() {
 		setSelectedId((selectedId) => (selectedId === id ? null : id));
 	};
 
-	const handleCloseMovieDetails = () => {
+	const handleCloseMovieDetails = useCallback(() => {
 		setSelectedId(null);
-	};
+	}, []);
 
 	const handleAddWatched = (movie: IMovie) => {
 		setWatched((watched) => [...watched, movie]);
@@ -48,36 +43,7 @@ export default function App() {
 		localStorage.setItem('watched', JSON.stringify(watched));
 	}, [watched]);
 
-	useEffect(() => {
-		const controller = new AbortController();
-
-		const getMovies = async (query: string) => {
-			try {
-				setIsLoading(true);
-				setError('');
-				const url = `${API_BASE_URL}/?apikey=${API_KEY}&s=${query}`;
-				const res = await fetch(url, { signal: controller.signal });
-				const data = await res.json();
-				if (data.Response === 'False') throw new Error(data.Error);
-				setMovies(data.Search);
-			} catch (error) {
-				if (error instanceof Error && !controller.signal.aborted) setError(error.message);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		if (query.length < 3) {
-			setMovies([]);
-			setError('');
-			return;
-		}
-
-		handleCloseMovieDetails();
-		getMovies(query);
-
-		return () => controller.abort();
-	}, [query]);
+	const { movies, isLoading, error } = useMovies(query, handleCloseMovieDetails);
 
 	return (
 		<div className='min-h-screen py-10 text-xl text-white bg-slate-800'>
