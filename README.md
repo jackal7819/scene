@@ -1,73 +1,125 @@
-# React + TypeScript + Vite
+# Scene
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](#)  
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](#)
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Scene** is a lightweight, modern web application built with **Vite**, **React**, and **TypeScript**. It provides a fast development experience with hot-module-replacement (HMR) and a production-ready build setup. Use this project as a starting point for building interactive and scalable front-end applications.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+-   Project scaffolded with **Vite** for fast builds and dev server
+-   Type safety with **TypeScript**
+-   React component-based architecture
+-   ESLint configured for TypeScript projects
+-   Modular and extendable folder structure
+-   Easy to build for production
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+These instructions will help you get a copy of the project up and running on your local machine for development and testing purposes.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+-   Node.js (recommended version >= 16)
+-   npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/jackal7819/scene.git
+cd scene
+
+# Install dependencies
+npm install
+# or
+yarn install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+To start a development server with hot-reloading:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
+# or
+yarn dev
 ```
+
+By default, Vite runs on http://localhost:5173 (unless you changed the port).
+
+## Production Build
+
+To build the application for production:
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+This will output optimized files into the dist/ directory (or other, if configured).
+
+To preview the production build locally:
+
+```bash
+npm run preview
+# or
+yarn preview
+```
+
+---
+
+## Project Structure
+
+```
+scene/
+├── public/                # Static assets
+├── src/                   # Main source code
+│   ├── components/        # Reusable React components
+│   ├── pages/             # Page-level components (if used)
+│   ├── hooks/             # Custom React hooks
+│   ├── App.tsx            # Root component
+│   └── main.tsx           # Entry point
+├── package.json            # Dependencies & scripts
+├── tsconfig.app.json       # TypeScript config for app
+├── tsconfig.node.json      # TypeScript config for node scripts
+├── vite.config.ts          # Vite configuration
+└── eslint.config.ts        # ESLint configuration
+```
+
+Feel free to adapt the structure to your needs. For example, you may add services/ for API calls, or styles//assets/.
+
+---
+
+Configuration
+• Vite: Configured in vite.config.ts, supports modern build optimizations.
+• TypeScript: Separated configurations for development and other contexts (tsconfig.app.json, tsconfig.node.json).
+• ESLint: Flat config or custom config in eslint.config.ts tailored for TypeScript+React.
+
+---
+
+Contributing
+
+Contributions are welcome! Here’s a suggested workflow: 1. Fork the repository 2. Create a feature branch: git checkout -b feature/your-feature 3. Make your changes 4. Lint and test your code locally 5. Commit your changes: git commit -m "Add some feature" 6. Push your branch: git push origin feature/your-feature 7. Open a Pull Request
+
+Please make sure your changes meet the project’s code style and pass linting checks.
+
+---
+
+License
+
+This project is licensed under the MIT License. See the LICENSE￼ file for details.
+
+---
+
+Contact
+
+Repository Owner: jackal7819
+Feel free to reach out via GitHub for questions or feedback.
